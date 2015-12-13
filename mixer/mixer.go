@@ -26,33 +26,12 @@ func NewChannelsMixer (count int) ChannelsMixer {
         }
         mixer.channels[i].waves <- []*Wave{} // init empty array in channel buffer
     }
-    log.Printf("channels: %d\n",len(mixer.channels))
-
-//    mixer.channels[0].AddSound("test1.wav",WT_SFX,60)
-//    mixer.channels[0].AddSound("test2.wav",WT_LOOP,0.5)
-//    mixer.channels[0].AddSound("test3.wav",WT_LOOP,0.5)
-//    mixer.channels[1].AddSound("test1.wav",WT_LOOP,0.5)
-//    mixer.channels[1].AddSound("test2.wav",WT_LOOP,0.5)
-//    mixer.channels[1].AddSound("test3.wav",WT_LOOP,0.5)
-//    mixer.channels[2].AddSound("test1.wav",WT_LOOP,0.5)
-//    mixer.channels[2].AddSound("test2.wav",WT_LOOP,0.5)
-//    mixer.channels[2].AddSound("test3.wav",WT_LOOP,0.5)
-//    mixer.channels[3].AddSound("test1.wav",WT_LOOP,0.5)
-//    mixer.channels[3].AddSound("test2.wav",WT_LOOP,0.5)
-//    mixer.channels[3].AddSound("test3.wav",WT_LOOP,0.5)
-//    mixer.channels[4].AddSound("test1.wav",WT_LOOP,0.5)
-//    mixer.channels[4].AddSound("test2.wav",WT_LOOP,0.5)
-//    mixer.channels[4].AddSound("test3.wav",WT_LOOP,0.5)
-//    mixer.channels[5].AddSound("test1.wav",WT_LOOP,0.5)
-//    mixer.channels[5].AddSound("test2.wav",WT_LOOP,0.5)
-//    mixer.channels[5].AddSound("test3.wav",WT_LOOP,0.5)
 
     return mixer
 }
 
 func (this ChannelsMixer) Close() chan bool {
-    log.Printf("Mixer closing\n")
-    panic("closing")
+    log.Fatal("Mixer closing")
     closed := make(chan bool)
     this.closing <- closed
     return closed
@@ -115,22 +94,10 @@ func (this ChannelsMixer) Mix() chan []byte {
                     case pcs = <-this.channels[i].dataChan:
                         data[i*2] = pcs[0]
                         data[i*2 + 1] = pcs[1]
-                    //binary.LittleEndian.PutUint16(data)
-                    //binary.Write(data, binary.LittleEndian, pcs)
-                    //                        case <-time.After(time.Second):
-                    //                            log.Printf("Composer timeout")
                     }
 
-
-                    //binary.BigEndian.PutUint16(data, )
                 }
             dataChan <- data
-//                    select {
-//                    case dataChan <- data:
-//                    case <-time.After(time.Second):
-//                        log.Printf("Write timeout")
-//                        panic("Write timeout (race condition)")
-//                    }
             }
         }
     }()

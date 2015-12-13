@@ -155,7 +155,6 @@ func (this *Wave) ReadInt16() (int16, error) {
         c, err := this.file.Read(this.buffer)
         if c > 0 || err != nil {
             this.end = c
-           // log.Printf("Read: %d\n",c)
         }
         if this.pos >= this.end {
             return 0, io.EOF
@@ -183,7 +182,6 @@ func (this *Channel) render() {
         default:
             waves := <-this.waves // get array
             if len(waves) == 0 {
-                //log.Fatal(this.waves)
                 this.waves <- waves // return array
                 this.dataChan <- [2]byte{0,0}
             } else {
@@ -200,18 +198,13 @@ func (this *Channel) render() {
                         } else if w.wtype == WT_LOOP {
                             w.open()
                         }
-                        //fmt.Println(err)
                     } else {
-                        //binary.Read(waveData, binary.LittleEndian, &chunk)
                         waveChanByte += int16(float64(chunk) * w.volume)
-
-                        //w.file.Seek(2, 1)
                     }
                 }
                 this.waves <- waves // return array
 
 
-                //log.Printf("%d",waveChanByte)
                 select {
                 case this.dataChan <- [2]byte{ byte(waveChanByte), byte(waveChanByte  >> 8) }:
                 case result:= <-this.closing:

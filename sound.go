@@ -228,10 +228,6 @@ func main() {
                 client.Publish("rt", "u-pong:"+daemonname+":ok")
             }
         }
-
-
     }
-
-    //panic("Show dumps")
 }
 
