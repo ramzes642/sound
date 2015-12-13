@@ -5,11 +5,12 @@ This is a network audio player for smart home.
 
 Install:
     
-    $ go get github.com/ramzes642/soundmixer
+    $ go get github.com/ramzes642/sound
+    $ go build github.com/ramzes642/sound
 
 Run server:
 	
-	$ $GOPATH/bin/soundmixer -path /Users/ramzes/tmp -redis 127.0.0.1:6379 | play -c 6 -b 16 -e signed -t raw -r 44.1k -q -
+	$ $GOPATH/bin/sound -path /Users/ramzes/tmp -redis 127.0.0.1:6379 | play -c 6 -b 16 -e signed -t raw -r 44.1k -q -
 
 Send sound to play:
 	
