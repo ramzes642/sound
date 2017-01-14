@@ -46,7 +46,7 @@ func (this ChannelsMixer) GetChannel(id int) *Channel {
 
 func (this ChannelsMixer) Mix() chan []byte {
 
-    dataChan := make(chan []byte)
+    dataChan := make(chan []byte,500)
 
     chanCount := len(this.channels)
     log.Printf("Channels count %d",chanCount)

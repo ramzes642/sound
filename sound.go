@@ -169,7 +169,7 @@ func main() {
                         vol, _ := strconv.ParseFloat(cmd[2], 32)
                         cid, _ := strconv.Atoi(c)
                         cid -= channelstart
-                        if cid > 0 && cid < channelcount {
+                        if cid > 0 && cid <= channelcount {
                             log.Printf("Adding sfx to %d\n", cid)
                             CheckConvert(cmd[3], func(filename string) {
                                 mix.GetChannel(cid-1).AddSound(filename, mixer.WT_SFX, vol)
@@ -184,7 +184,7 @@ func main() {
                         vol, _ := strconv.ParseFloat(cmd[2], 32)
                         cid, _ := strconv.Atoi(c)
                         cid -= channelstart
-                        if cid > 0 && cid < channelcount {
+                        if cid > 0 && cid <= channelcount {
                             log.Printf("Adding loop to %d\n", cid)
                             CheckConvert(cmd[3], func(filename string) {
                                 mix.GetChannel(cid-1).StopSound(mixer.WT_LOOP)
@@ -198,7 +198,7 @@ func main() {
                     for _, c := range channels {
                         cid, _ := strconv.Atoi(c)
                         cid -= channelstart
-                        if cid > 0 && cid < channelcount {
+                        if cid > 0 && cid <= channelcount {
                             mix.GetChannel(cid-1).StopSound(mixer.WT_SFX)
                         }
                     }
@@ -208,7 +208,7 @@ func main() {
                     for _, c := range channels {
                         cid, _ := strconv.Atoi(c)
                         cid -= channelstart
-                        if cid > 0 && cid < channelcount {
+                        if cid > 0 && cid <= channelcount {
                             mix.GetChannel(cid-1).StopSound(mixer.WT_ALL)
                         }
                     }
@@ -218,7 +218,7 @@ func main() {
                     for _, c := range channels {
                         cid, _ := strconv.Atoi(c)
                         cid -= channelstart
-                        if cid > 0 && cid < channelcount {
+                        if cid > 0 && cid <= channelcount {
                             mix.GetChannel(cid-1).FadeSound(mixer.WT_ALL, fadeSpeed)
                         }
                     }

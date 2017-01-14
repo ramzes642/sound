@@ -27,6 +27,7 @@ type Wave struct {
     pos, end int
     read, maxpos uint32
     stereo bool
+    filename string
 }
 
 type Channel struct {
@@ -59,6 +60,7 @@ func (this *Channel) AddSound(filename string, wtype WaveType, volume float64) {
         buffer: make([]byte, read_buf_size),
         pos: 0,
         read: 0,
+        filename: filename,
     }
     waves = append(waves, w)
     w.open()
@@ -113,11 +115,18 @@ func (this *Wave) open() error {
         this.end = c
     }
     // TODO: Wave channels detection
-    this.stereo = false
-    this.pos = 48
-    this.read = 48
-    subchunkSizeOffset := binary.LittleEndian.Uint32(this.buffer[16:20]) + 24
-    this.maxpos = binary.LittleEndian.Uint32(this.buffer[subchunkSizeOffset:subchunkSizeOffset+4])
+    if this.filename[len(this.filename)-4:] == ".wav" {
+        this.stereo = false
+        this.pos = 48
+        this.read = 48
+        subchunkSizeOffset := binary.LittleEndian.Uint32(this.buffer[16:20]) + 24
+        this.maxpos = binary.LittleEndian.Uint32(this.buffer[subchunkSizeOffset:subchunkSizeOffset+4])
+    } else {
+        this.stereo = false
+        this.pos = 0
+        this.read = 0
+        this.maxpos = 4294967295;
+    }
 
     return err
 }
@@ -193,7 +202,11 @@ func (this *Channel) render() {
                     if err == io.EOF {
                         if w.wtype == WT_SFX {
                             w.file.Seek(0, 0)
-                            waves = append(waves[:i], waves[i+1:]...)
+			    if len(waves) > i {
+                        	waves = append(waves[:i], waves[i+1:]...)
+			    } else {
+				waves = waves[:i];
+			    }
 
                         } else if w.wtype == WT_LOOP {
                             w.open()
